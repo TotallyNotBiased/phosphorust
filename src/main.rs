@@ -1,13 +1,26 @@
 use std::error::Error;
+use std::num::NonZeroU32;
+use std::rc::Rc;
 use winit::{application::ApplicationHandler, event::WindowEvent, event_loop::{self, ActiveEventLoop, EventLoop}, window::{Window, WindowId}};
 
 struct App {
-    window: Option<Window>,
+    window: Option<Rc<Window>>,
+    surface: Option<softbuffer::Surface<Rc<Window>, Rc<Window>>>,
 }
 
 impl ApplicationHandler for App {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
-        self.window = Some(event_loop.create_window(Window::default_attributes()).unwrap());
+        let window_attributes = Window::default_attributes().with_title("phosphorust");
+        let window = Rc::new(event_loop.create_window(window_attributes).unwrap());
+        self.window = Some(window.clone());
+
+        let context = softbuffer::Context::new(window.clone()).unwrap();
+        let surface = softbuffer::Surface::new(&context, window.clone()).unwrap();
+        self.surface = Some(surface);
+        
+        println!("Window created and surface attached.");
+        
+        window.request_redraw();
     }
     
     fn window_event(&mut self, event_loop: &ActiveEventLoop, id: WindowId, event: WindowEvent) {
@@ -17,7 +30,25 @@ impl ApplicationHandler for App {
                 event_loop.exit();
             },
             WindowEvent::RedrawRequested => {
-                self.window.as_ref().unwrap().request_redraw();
+                if let (Some(window), Some(surface)) = (&self.window, &mut self.surface) {
+                    let (width, height) = {
+                        let size = window.inner_size();
+                        (size.width, size.height)
+                    };
+                    
+                    surface
+                        .resize(
+                            NonZeroU32::new(width).unwrap(),
+                            NonZeroU32::new(height).unwrap(),
+                        )
+                        .unwrap();
+
+                    let mut buffer = surface.buffer_mut().unwrap();
+
+                    buffer.fill(0x6495ED); 
+
+                    buffer.present().unwrap();
+                }
             }
             _ => (),
         }
@@ -25,11 +56,13 @@ impl ApplicationHandler for App {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
+    env_logger::init();
+
     let event_loop = EventLoop::new().unwrap();
 
     event_loop.set_control_flow(event_loop::ControlFlow::Poll);
 
-    let mut app = App { window: None };
+    let mut app = App { window: None, surface: None, };
     event_loop.run_app(&mut app)?;
 
     Ok(())
