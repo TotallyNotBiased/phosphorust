@@ -29,8 +29,6 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     event_loop.set_control_flow(event_loop::ControlFlow::Poll);
 
-    let window_attributes = Window::default_attributes().with_title("phosphorust");
-
     let mut app = App { window: None };
     event_loop.run_app(&mut app)?;
 
