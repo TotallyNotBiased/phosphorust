@@ -1,7 +1,12 @@
 use std::error::Error;
 use std::num::NonZeroU32;
 use std::rc::Rc;
-use winit::{application::ApplicationHandler, event::WindowEvent, event_loop::{self, ActiveEventLoop, EventLoop}, window::{Window, WindowId}};
+use winit::application::ApplicationHandler;
+use winit::event::WindowEvent;
+use winit::event_loop::{self, ActiveEventLoop, EventLoop};
+use winit::window::{Window, WindowId};
+
+use winit::platform::x11::EventLoopBuilderExtX11;
 
 struct App {
     window: Option<Rc<Window>>,
@@ -58,7 +63,7 @@ impl ApplicationHandler for App {
 fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
 
-    let event_loop = EventLoop::new().unwrap();
+    let event_loop = EventLoop::builder().with_x11().build()?;
 
     event_loop.set_control_flow(event_loop::ControlFlow::Poll);
 
