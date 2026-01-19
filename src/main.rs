@@ -6,6 +6,7 @@ use winit::event::WindowEvent;
 use winit::event_loop::{self, ActiveEventLoop, EventLoop};
 use winit::window::{Window, WindowId};
 
+// comment out for wayland and change event_loop declaration in main()
 use winit::platform::x11::EventLoopBuilderExtX11;
 
 struct App {
@@ -63,6 +64,8 @@ impl ApplicationHandler for App {
 fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
 
+    // Wayland isn't working in WSL2 so we force x11 here. Otherwise we can 
+    // let event_loop = EventLoop::event_loop::new()?;
     let event_loop = EventLoop::builder().with_x11().build()?;
 
     event_loop.set_control_flow(event_loop::ControlFlow::Poll);

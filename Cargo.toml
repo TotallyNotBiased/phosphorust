@@ -7,4 +7,4 @@ edition = "2024"
 env_logger = "0.11.8"
 log = "0.4.29"
 softbuffer = "0.4.8"
-winit = { version = "0.30.12", features = ["x11", "wayland"] }
+winit = "0.30.12"
