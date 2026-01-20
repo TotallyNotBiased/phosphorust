@@ -32,7 +32,7 @@ impl ApplicationHandler for App {
     fn window_event(&mut self, event_loop: &ActiveEventLoop, id: WindowId, event: WindowEvent) {
         match event {
             WindowEvent::CloseRequested => {
-                println!("The close button was pressed; stopping.");
+                println!("CloseRequested event. Window closed.");
                 event_loop.exit();
             },
             WindowEvent::RedrawRequested => {
@@ -51,7 +51,16 @@ impl ApplicationHandler for App {
 
                     let mut buffer = surface.buffer_mut().unwrap();
 
-                    buffer.fill(0x6495ED); 
+                    for index in 0..(buffer.width().get() * buffer.height().get()) {
+                        let y = index / buffer.width().get();
+                        let x = index % buffer.width().get();
+                        let red = x % 255;
+                        let green = y % 255;
+                        let blue = (x * y) % 255;
+
+                        buffer[index as usize] = blue | (green << 8) | (red << 16);
+                    }
+                    // buffer.fill(0x6495ED); 
 
                     buffer.present().unwrap();
                 }
