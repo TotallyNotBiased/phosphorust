@@ -1,3 +1,6 @@
+mod math;
+use math::{Point3D, Vector3, Ray, Point2D};
+
 use std::error::Error;
 use std::num::NonZeroU32;
 use std::rc::Rc;
@@ -15,6 +18,15 @@ struct Canvas<'a> {
     height: u32,
 }
 
+impl Point2D {
+    pub fn project_viewport(&self, viewport: Viewport, canvas: Canvas, distance: f64) -> Point3D {
+        let vx = self.x * (viewport.width as f64 / canvas.width as f64);
+        let vy = self.y * (viewport.height as f64 / canvas.height as f64);
+
+        Point3D::new(vx, vy, distance)
+    }
+}
+
 impl<'a> Canvas<'a> {
     fn put_pixel(&mut self, p: Point2D, color: u32) {
         let x_norm = (self.width / 2) as f64 + p.x;
@@ -29,61 +41,6 @@ struct Viewport {
     width: u32,
     height: u32,
 }
-
-
-#[derive(Debug, Clone, Copy)]
-struct Point2D {
-    x: f64,
-    y: f64,
-}
-
-impl Point2D {
-    pub fn project_viewport(&self, viewport: Viewport, canvas: Canvas, distance: f64) -> Point3D {
-        let vx = self.x * (viewport.width as f64 / canvas.width as f64);
-        let vy = self.y * (viewport.height as f64 / canvas.height as f64);
-
-        Point3D::new(vx, vy, distance)
-    }
-}
-
-#[derive(Debug, Clone, Copy)]
-struct Point3D {
-    x: f64,
-    y: f64,
-    z: f64,
-}
-
-impl Point3D {
-    pub fn new(x: f64, y: f64, z: f64) -> Self {
-        Self {x, y, z}
-    }
-
-    pub fn project2d(&self) -> Point2D {
-        Point2D { x: self.x, y: self.y }
-    }
-}
-
-
-struct Vector3 {
-    x: f64,
-    y: f64,
-    z: f64,
-}
-
-impl Vector3 {
-    pub fn normalize {
-
-#[derive(Debug, Clone, Copy)]
-struct Ray {
-    origin: Point3D,
-    direction: Vector3,
-}
-
-impl Ray {
-    pub fn cast(t: f64) -> Point3D {
-
-    }
-
 
 struct App {
     window: Option<Rc<Window>>,
