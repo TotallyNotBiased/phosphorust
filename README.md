@@ -1,4 +1,4 @@
-# Phosphorust
+# phosphorust
 
 I've always been interested in computer graphics, so this is a project where I implement the theoretical software rasterizer outlined in Gabriel Gambetta's *Computer Graphics From Scratch* (2021). In Rust! I'm still new to the language, so this will be an enlightening experience in more than one dimension.
 
