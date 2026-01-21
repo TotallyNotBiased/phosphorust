@@ -9,6 +9,82 @@ use winit::window::{Window, WindowId};
 // comment out for wayland and change event_loop declaration in main()
 use winit::platform::x11::EventLoopBuilderExtX11;
 
+struct Canvas<'a> {
+    buffer: &'a mut [u32], 
+    width: u32,
+    height: u32,
+}
+
+impl<'a> Canvas<'a> {
+    fn put_pixel(&mut self, p: Point2D, color: u32) {
+        let x_norm = (self.width / 2) as f64 + p.x;
+        let y_norm = (self.height / 2) as f64 - p.y;
+        let index = ((self.width as f64 * y_norm) + x_norm) as usize;
+
+        self.buffer[index] = color;
+    }
+}
+
+struct Viewport {
+    width: u32,
+    height: u32,
+}
+
+
+#[derive(Debug, Clone, Copy)]
+struct Point2D {
+    x: f64,
+    y: f64,
+}
+
+impl Point2D {
+    pub fn project_viewport(&self, viewport: Viewport, canvas: Canvas, distance: f64) -> Point3D {
+        let vx = self.x * (viewport.width as f64 / canvas.width as f64);
+        let vy = self.y * (viewport.height as f64 / canvas.height as f64);
+
+        Point3D::new(vx, vy, distance)
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+struct Point3D {
+    x: f64,
+    y: f64,
+    z: f64,
+}
+
+impl Point3D {
+    pub fn new(x: f64, y: f64, z: f64) -> Self {
+        Self {x, y, z}
+    }
+
+    pub fn project2d(&self) -> Point2D {
+        Point2D { x: self.x, y: self.y }
+    }
+}
+
+
+struct Vector3 {
+    x: f64,
+    y: f64,
+    z: f64,
+}
+
+impl Vector3 {
+    pub fn normalize {
+
+#[derive(Debug, Clone, Copy)]
+struct Ray {
+    origin: Point3D,
+    direction: Vector3,
+}
+
+impl Ray {
+    pub fn cast(t: f64) -> Point3D {
+
+    }
+
+
 struct App {
     window: Option<Rc<Window>>,
     surface: Option<softbuffer::Surface<Rc<Window>, Rc<Window>>>,
@@ -50,17 +126,22 @@ impl ApplicationHandler for App {
                         .unwrap();
 
                     let mut buffer = surface.buffer_mut().unwrap();
+                    buffer.fill(0);
+                    
+                    { // lifetime bullshit 
+                        let mut canvas = Canvas {
+                            width: buffer.width().get(),
+                            height: buffer.height().get(),
+                            buffer: &mut buffer,
+                        };
 
-                    for index in 0..(buffer.width().get() * buffer.height().get()) {
-                        let y = index / buffer.width().get();
-                        let x = index % buffer.width().get();
-                        let red = x % 255;
-                        let green = y % 255;
-                        let blue = (x * y) % 255;
+                        // draw pixels here
 
-                        buffer[index as usize] = blue | (green << 8) | (red << 16);
+                        let p3 = Point3D::new(0.0, 0.0, 0.0);
+
+                        let p2 = p3.project2d();
+                        canvas.put_pixel(p2, 0x6495ED);
                     }
-                    // buffer.fill(0x6495ED); 
 
                     buffer.present().unwrap();
                 }
