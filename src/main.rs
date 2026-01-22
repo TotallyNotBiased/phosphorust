@@ -99,7 +99,7 @@ impl ApplicationHandler for App {
                         
                         for x in -(canvas.width/2)..(canvas.width/2) {
                             for y in -(canvas.height/2)..(canvas.height/2) {
-                                let d = Point3D.ne
+                                let d = Point3D
  
 
                         let p3 = Point3D::new(0.0, 0.0, 0.0);
