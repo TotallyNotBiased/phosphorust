@@ -15,7 +15,7 @@ impl Sphere {
         let to_origin = ray.origin - self.origin;
         let a = ray.direction.dot(ray.direction);
         let b = 2.0 * (to_origin.dot(ray.direction));
-        let c = (to_origin.dot(to_origin)) - self.radius;
+        let c = (to_origin.dot(to_origin)) - self.radius.powi(2);
 
         let roots = bad_quadratic(a, b, c);
 
@@ -27,7 +27,7 @@ impl Sphere {
                     return None; // sphere is behind camera
                 }
 
-                if t1 < 0.0 { return Some(t2); } // camera is inside the Sphere
+                if t1 < 0.0 { return Some(t2); } // camera is inside the sphere
 
                 Some(t1.min(t2))
             }

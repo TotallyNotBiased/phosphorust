@@ -96,6 +96,11 @@ impl ApplicationHandler for App {
                         };
 
                         // draw pixels here
+                        
+                        for x in -(canvas.width/2)..(canvas.width/2) {
+                            for y in -(canvas.height/2)..(canvas.height/2) {
+                                let d = can
+
 
                         let p3 = Point3D::new(0.0, 0.0, 0.0);
 
