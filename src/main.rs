@@ -1,8 +1,9 @@
 pub mod math;
 pub mod primitive;
 
-use math::{Point3D, Vector3, Ray, Point2D};
+use math::{Point3D, Ray, Point2D};
 use primitive::Sphere;
+use winit::dpi::LogicalSize;
 
 use std::error::Error;
 use std::num::NonZeroU32;
@@ -15,14 +16,10 @@ use winit::window::{Window, WindowId};
 // comment out for wayland and change event_loop declaration in main()
 use winit::platform::x11::EventLoopBuilderExtX11;
 
-struct Canvas<'a> {
-    buffer: &'a mut [u32], 
-    width: u32,
-    height: u32,
-}
+use crate::primitive::Primitive;
 
 impl Point2D {
-    fn project_viewport(&self, viewport: Viewport, canvas: Canvas, distance: f64) -> Point3D {
+    fn project_viewport(&self, viewport: &Viewport, canvas: &Canvas, distance: f64) -> Point3D {
         let vx = self.x * (viewport.width as f64 / canvas.width as f64);
         let vy = self.y * (viewport.height as f64 / canvas.height as f64);
 
@@ -30,10 +27,62 @@ impl Point2D {
     }
 }
 
+pub struct Scene {
+    pub origin: Point3D,
+    pub objects: Vec<Box<dyn Primitive>>,
+    pub background_color: u32,
+}
+
+impl Scene {
+    pub fn new() -> Self {
+        Self { 
+            origin: Point3D { x: 0.0, y: 0.0, z: 0.0 },
+            objects: Vec::new(),
+            background_color: 0,
+        }
+    }
+
+    pub fn add(&mut self, object: Box<dyn Primitive>) {
+        self.objects.push(object);
+    }
+
+    fn trace_ray(&self, o: Point3D, d: Point3D, distance: f64, viewrange: usize) -> u32 {
+        let mut closest_t = viewrange as f64;
+        let mut closest_object: Option<&Box<dyn Primitive>> = None;
+        let ray = Ray { origin: self.origin, direction: (d - o).normalize() };
+        for object in &self.objects {
+            
+            let t = object.intersect(&ray);
+
+            match t {
+                Some(t) => { 
+                    if (distance <= t && t <= viewrange as f64) && t < closest_t {
+                        closest_t = t;
+                        closest_object = Some(object);
+                    }
+                }
+                None => {
+                }
+            }
+        }
+
+        match closest_object {
+            None => self.background_color,
+            Some(object) => object.color(),
+        }
+    }
+}
+
+struct Canvas<'a> {
+    buffer: &'a mut [u32], 
+    width: u32,
+    height: u32,
+}
+
 impl<'a> Canvas<'a> {
     fn put_pixel(&mut self, p: Point2D, color: u32) {
         let x_norm = (self.width / 2) as f64 + p.x;
-        let y_norm = (self.height / 2) as f64 - p.y;
+        let y_norm = (self.height / 2) as f64 - p.y - 1.0;
         let index = ((self.width as f64 * y_norm) + x_norm) as usize;
 
         self.buffer[index] = color;
@@ -41,8 +90,8 @@ impl<'a> Canvas<'a> {
 }
 
 struct Viewport {
-    width: u32,
-    height: u32,
+    width: f64,
+    height: f64,
 }
 
 struct App {
@@ -52,7 +101,9 @@ struct App {
 
 impl ApplicationHandler for App {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
-        let window_attributes = Window::default_attributes().with_title("phosphorust");
+        let window_attributes = Window::default_attributes()
+            .with_title("phosphorust")
+            .with_inner_size(LogicalSize::new(600.0, 600.0));
         let window = Rc::new(event_loop.create_window(window_attributes).unwrap());
         self.window = Some(window.clone());
 
@@ -65,7 +116,7 @@ impl ApplicationHandler for App {
         window.request_redraw();
     }
     
-    fn window_event(&mut self, event_loop: &ActiveEventLoop, id: WindowId, event: WindowEvent) {
+    fn window_event(&mut self, event_loop: &ActiveEventLoop, _id: WindowId, event: WindowEvent) {
         match event {
             WindowEvent::CloseRequested => {
                 println!("CloseRequested event. Window closed.");
@@ -95,21 +146,39 @@ impl ApplicationHandler for App {
                             buffer: &mut buffer,
                         };
 
+                        let distance: f64 = 1.0; // normalize distance
+                        let viewrange: usize = 100;
+
+                        let viewport = Viewport { // and viewport extents
+                            width: 1.0,
+                            height: 1.0,
+                        };
+
                         // draw pixels here
                         
+                        let mut scene = Scene::new();
+                        scene.add(Box::new(
+                                Sphere::new(Point3D::new(0.0, -1.0, 3.0), 1.0, 0xFF0000)));
+                        scene.add(Box::new(
+                                Sphere::new(Point3D::new(2.0, 0.0, 4.0), 1.0, 0x0000FF)));
+                        scene.add(Box::new(
+                                Sphere::new(Point3D::new(-2.0, 0.0, 4.0), 1.0, 0x00FF00)));
+
                         let o = Point3D::new(0.0, 0.0, 0.0); // camera origin
                         
-                        for x in -(canvas.width/2)..(canvas.width/2) {
-                            for y in -(canvas.height/2)..(canvas.height/2) {
-                                let viewport_point = Point2D { x, y }
-                                let d = viewport_point.project_viewport(viewport, canvas, distance);
-                                canvas.put_pixel(i, color);
- 
+                        for x in -(canvas.width as i32/2)..(canvas.width as i32/2) {
+                            for y in -(canvas.height as i32/2)..(canvas.height as i32/2) {
+                                let viewport_point = Point2D { x: x as f64, y: y as f64 };
+                                let d = viewport_point.project_viewport(&viewport, &canvas, distance);
+                                let color = scene.trace_ray(o, d, distance, viewrange);
+                                canvas.put_pixel(viewport_point, color);
+                            }
+                        }
 
-                        let p3 = Point3D::new(0.0, 0.0, 0.0);
+                        // let p3 = Point3D::new(0.0, 0.0, 0.0); 
 
-                        let p2 = p3.project2d();
-                        canvas.put_pixel(p2, 0x6495ED);
+                        // let p2 = p3.project2d();
+                        // canvas.put_pixel(p2, 0x6495ED);
                     }
 
                     buffer.present().unwrap();
