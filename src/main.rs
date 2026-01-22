@@ -101,7 +101,7 @@ impl ApplicationHandler for App {
                         
                         for x in -(canvas.width/2)..(canvas.width/2) {
                             for y in -(canvas.height/2)..(canvas.height/2) {
-                                let viewport_point = Point2D { x, y };
+                                let viewport_point = Point2D { x, y }
                                 let d = viewport_point.project_viewport(viewport, canvas, distance);
                                 canvas.put_pixel(i, color);
  
