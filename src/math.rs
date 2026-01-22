@@ -65,6 +65,18 @@ impl Vector3 {
             z: self.z / len,
         }
     }
+
+    pub fn dot(&self, other: Vector3) -> f64 {
+        (self.x * other.x) + (self.y * other.y) + (self.z * other.z)
+    }
+
+    pub fn cross(&self, other: Vector3) -> Self {
+        Self {
+            x: self.y * other.z - self.z * other.y,
+            y: self.z * other.x - self.x * other.z,
+            z: self.x * other.y - self.y * other.x,
+        }
+    }
 }
 
 impl std::ops::Mul<f64> for Vector3 {
@@ -75,6 +87,17 @@ impl std::ops::Mul<f64> for Vector3 {
             x: self.x * other,
             y: self.y * other,
             z: self.z * other,
+        }
+    }
+}
+
+impl std::ops::Add for Vector3 {
+    type Output = Self;
+    fn add(self, other: Vector3) -> Self {
+        Self {
+            x: self.x + other.x,
+            y: self.y + other.y,
+            z: self.z + other.z,
         }
     }
 }
@@ -105,5 +128,26 @@ impl Ray {
 
     pub fn cast(&self, t: f64) -> Point3D {
         self.origin + (self.direction * t)
+    }
+}
+
+pub fn bad_quadratic(a: f64, b:f64, c: f64) -> Option<(f64, f64)> {
+    let discriminant = b * b - (4.0 * a * c);
+
+    if a == 0.0 {
+        if b != 0.0 {
+            return Some((-c / -b, -c / b));
+        } else {
+            return None;
+        }
+    }
+    
+    if discriminant >= 0.0 {
+        let sqrt_dis = discriminant.sqrt();
+        let r1 = (-b + sqrt_dis) / (2.0 * a);
+        let r2 = (-b - sqrt_dis) / (2.0 * a);
+        Some((r1.min(r2), r1.max(r2)))
+    } else {
+        None
     }
 }
