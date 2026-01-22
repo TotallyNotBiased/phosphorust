@@ -15,7 +15,7 @@ impl Scene {
             origin: Point3D { x: 0.0, y: 0.0, z: 0.0 },
             objects: Vec::new(),
             lights: Vec::new(),
-            background_color: 0,
+            background_color: 0x101010,
         }
     }
 
@@ -44,7 +44,6 @@ impl Scene {
         }
         i
     }
-            
 
 
 
