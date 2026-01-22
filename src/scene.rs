@@ -45,8 +45,6 @@ impl Scene {
         i
     }
 
-
-
     pub fn trace_ray(&self, o: Point3D, d: Point3D, distance: f64, viewrange: usize) -> u32 {
         let mut closest_t = viewrange as f64;
         let mut closest_object: Option<&Box<dyn Primitive>> = None;
