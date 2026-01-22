@@ -3,6 +3,7 @@ use crate::math::{Point3D, Ray, bad_quadratic};
 pub trait Primitive {
     fn intersect(&self, ray: &Ray) -> Option<f64>;
     fn color(&self) -> u32;
+    fn get_origin(&self) -> Point3D;
 }
 
 pub struct Sphere {
@@ -44,6 +45,10 @@ impl Primitive for Sphere {
 
     fn color(&self) -> u32 {
         self.color
+    }
+
+    fn get_origin(&self) -> Point3D {
+        self.origin
     }
 }
 

@@ -2,12 +2,14 @@ pub mod math;
 pub mod primitive;
 pub mod canvas;
 pub mod scene;
+pub mod light;
 
-use math::{Point3D, Point2D};
+use math::{Point3D, Vector3, Point2D};
 use primitive::Sphere;
 use winit::dpi::LogicalSize;
 use canvas::Canvas;
 use scene::{Scene, Viewport};
+use light::*;
 
 use std::error::Error;
 use std::num::NonZeroU32;
@@ -89,6 +91,12 @@ impl ApplicationHandler for App {
                                 Sphere::new(Point3D::new(2.0, 0.0, 4.0), 1.0, 0x0000FF)));
                         scene.add(Box::new(
                                 Sphere::new(Point3D::new(-2.0, 0.0, 4.0), 1.0, 0x00FF00)));
+                        scene.add(Box::new(
+                                Sphere::new(Point3D::new(0.0, -5001.0, 0.0), 5000.0, 0xFFFF00)));
+
+                        scene.add_light(Light::new_ambient(0.2));
+                        scene.add_light(Light::new_point(0.6, Point3D::new(2.0, 1.0, 0.0)));
+                        scene.add_light(Light::new_directional(0.2, Vector3 { x: 1.0, y: 4.0, z: 4.0 }));
 
                         let o = Point3D::new(0.0, 0.0, 0.0); // camera origin
                         
