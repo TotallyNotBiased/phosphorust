@@ -1,5 +1,8 @@
-mod math;
+pub mod math;
+pub mod primitive;
+
 use math::{Point3D, Vector3, Ray, Point2D};
+use primitive::Sphere;
 
 use std::error::Error;
 use std::num::NonZeroU32;
@@ -19,7 +22,7 @@ struct Canvas<'a> {
 }
 
 impl Point2D {
-    pub fn project_viewport(&self, viewport: Viewport, canvas: Canvas, distance: f64) -> Point3D {
+    fn project_viewport(&self, viewport: Viewport, canvas: Canvas, distance: f64) -> Point3D {
         let vx = self.x * (viewport.width as f64 / canvas.width as f64);
         let vy = self.y * (viewport.height as f64 / canvas.height as f64);
 
