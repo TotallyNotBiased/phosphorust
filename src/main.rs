@@ -97,9 +97,13 @@ impl ApplicationHandler for App {
 
                         // draw pixels here
                         
+                        let o = Point3D::new(0.0, 0.0, 0.0); // camera origin
+                        
                         for x in -(canvas.width/2)..(canvas.width/2) {
                             for y in -(canvas.height/2)..(canvas.height/2) {
-                                let d = Point3D
+                                let viewport_point = Point2D { x, y };
+                                let d = viewport_point.project_viewport(viewport, canvas, distance);
+                                canvas.put_pixel(i, color);
  
 
                         let p3 = Point3D::new(0.0, 0.0, 0.0);
