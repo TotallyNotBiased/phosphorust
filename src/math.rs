@@ -1,7 +1,19 @@
+use crate::scene::Viewport;
+use crate::canvas::Canvas;
+
 #[derive(Debug, Clone, Copy)]
 pub struct Point2D {
     pub x: f64,
     pub y: f64,
+}
+
+impl Point2D {
+    pub fn project_viewport(&self, viewport: &Viewport, canvas: &Canvas, distance: f64) -> Point3D {
+        let vx = self.x * (viewport.width as f64 / canvas.width as f64);
+        let vy = self.y * (viewport.height as f64 / canvas.height as f64);
+
+        Point3D::new(vx, vy, distance)
+    }
 }
 
 #[derive(Debug, Clone, Copy)]

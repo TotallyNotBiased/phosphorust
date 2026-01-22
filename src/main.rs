@@ -1,9 +1,13 @@
 pub mod math;
 pub mod primitive;
+pub mod canvas;
+pub mod scene;
 
-use math::{Point3D, Ray, Point2D};
+use math::{Point3D, Point2D};
 use primitive::Sphere;
 use winit::dpi::LogicalSize;
+use canvas::Canvas;
+use scene::{Scene, Viewport};
 
 use std::error::Error;
 use std::num::NonZeroU32;
@@ -15,84 +19,6 @@ use winit::window::{Window, WindowId};
 
 // comment out for wayland and change event_loop declaration in main()
 use winit::platform::x11::EventLoopBuilderExtX11;
-
-use crate::primitive::Primitive;
-
-impl Point2D {
-    fn project_viewport(&self, viewport: &Viewport, canvas: &Canvas, distance: f64) -> Point3D {
-        let vx = self.x * (viewport.width as f64 / canvas.width as f64);
-        let vy = self.y * (viewport.height as f64 / canvas.height as f64);
-
-        Point3D::new(vx, vy, distance)
-    }
-}
-
-pub struct Scene {
-    pub origin: Point3D,
-    pub objects: Vec<Box<dyn Primitive>>,
-    pub background_color: u32,
-}
-
-impl Scene {
-    pub fn new() -> Self {
-        Self { 
-            origin: Point3D { x: 0.0, y: 0.0, z: 0.0 },
-            objects: Vec::new(),
-            background_color: 0,
-        }
-    }
-
-    pub fn add(&mut self, object: Box<dyn Primitive>) {
-        self.objects.push(object);
-    }
-
-    fn trace_ray(&self, o: Point3D, d: Point3D, distance: f64, viewrange: usize) -> u32 {
-        let mut closest_t = viewrange as f64;
-        let mut closest_object: Option<&Box<dyn Primitive>> = None;
-        let ray = Ray { origin: self.origin, direction: (d - o).normalize() };
-        for object in &self.objects {
-            
-            let t = object.intersect(&ray);
-
-            match t {
-                Some(t) => { 
-                    if (distance <= t && t <= viewrange as f64) && t < closest_t {
-                        closest_t = t;
-                        closest_object = Some(object);
-                    }
-                }
-                None => {
-                }
-            }
-        }
-
-        match closest_object {
-            None => self.background_color,
-            Some(object) => object.color(),
-        }
-    }
-}
-
-struct Canvas<'a> {
-    buffer: &'a mut [u32], 
-    width: u32,
-    height: u32,
-}
-
-impl<'a> Canvas<'a> {
-    fn put_pixel(&mut self, p: Point2D, color: u32) {
-        let x_norm = (self.width / 2) as f64 + p.x;
-        let y_norm = (self.height / 2) as f64 - p.y - 1.0;
-        let index = ((self.width as f64 * y_norm) + x_norm) as usize;
-
-        self.buffer[index] = color;
-    }
-}
-
-struct Viewport {
-    width: f64,
-    height: f64,
-}
 
 struct App {
     window: Option<Rc<Window>>,
