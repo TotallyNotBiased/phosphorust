@@ -1,12 +1,12 @@
 # phosphorust
 
-I've always been interested in computer graphics, so this is a project where I implement the theoretical software rasterizer outlined in Gabriel Gambetta's *Computer Graphics From Scratch* (2021). In Rust! I'm still new to the language, so this will be an enlightening experience in more than one dimension.
+I've always been interested in computer graphics, so this is a project where I implement the theoretical software renderers outlined in Gabriel Gambetta's *Computer Graphics From Scratch* (2021). In Rust! I'm still new to the language, so this will be an enlightening experience in more than one dimension.
 
 This project will eventually develop into the renderer for my experimental ECS-based game engine in Rust, coming soon.
 
 ## Where We Are 
 
-Right now we're just a software raytracer with one kind of primitive (spheres), diffuse and specular lighting, and reflections, which I'm very excited about. Triangles coming soon.
+Right now we're just a software raytracer with one kind of primitive (spheres), diffuse and specular lighting, and reflections, which I'm very excited about. Triangles coming soon, with a different engine, a rasterizer.
 
 <img src="img/example1.png" alt="An image of the software raytracer in action" width="300" height="300">
 
