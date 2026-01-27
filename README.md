@@ -8,7 +8,7 @@ This project will eventually develop into the renderer for my experimental ECS-b
 
 Right now we're just a software raytracer with one kind of primitive (spheres), diffuse and specular lighting, and reflections, which I'm very excited about. Triangles coming soon.
 
-![An image of the software raytracer in action](img/example1.png)
+<img src="img/example1.png" alt="An image of the software raytracer in action" width="300" height="300">
 
 ## Following Along
 
