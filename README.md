@@ -4,6 +4,12 @@ I've always been interested in computer graphics, so this is a project where I i
 
 This project will eventually develop into the renderer for my experimental ECS-based game engine in Rust, coming soon.
 
+## Where We Are 
+
+Right now we're just a software raytracer with one kind of primitive (spheres), diffuse and specular lighting, and reflections, which I'm very excited about. Triangles coming soon.
+
+![An image of the software raytracer in action](img/example1.png)
+
 ## Following Along
 
 ### Using Nix 
