@@ -41,10 +41,10 @@ impl Scene {
 
             if let Some((l,t_max)) = light.vector(p) {
                 // shadows
-                let (shadow_t,_ , shadow_object) = self.closest_intersection(p, l, 0.001, t_max as usize);
+                let (_shadow_t,_ , shadow_object) = self.closest_intersection(p, l, 0.001, t_max as usize);
 
                 match shadow_object {
-                    Some(o) => continue,
+                    Some(_o) => continue,
                     None => {},
                 }
                 

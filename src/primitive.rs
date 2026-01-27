@@ -35,7 +35,6 @@ impl Primitive for Sphere {
         match roots { 
             None => None,
             Some((t1, t2)) => {
-
                 if t1 < 0.0 && t2 < 0.0 {
                     return None; // sphere is behind camera
                 }
