@@ -53,9 +53,10 @@ impl Scene {
         i
     }
 
-    pub fn trace_ray(&self, o: Point3D, d: Point3D, distance: f64, viewrange: usize) -> u32 {
+    pub fn closest_intersection(&self, o: Point3D, d: Point3D, distance: f64, viewrange: usize) -> (f64, Ray, Option<&Box<dyn Primitive>>) {
         let mut closest_t = viewrange as f64;
         let mut closest_object: Option<&Box<dyn Primitive>> = None;
+
         let ray = Ray { origin: self.origin, direction: (d - o).normalize() };
         for object in &self.objects {
             
@@ -71,7 +72,11 @@ impl Scene {
                 None => { /* don't do anything lol*/ }
             }
         }
-
+        (closest_t, ray, closest_object)
+    }
+    pub fn trace_ray(&self, o: Point3D, d: Point3D, distance: f64, viewrange: usize) -> u32 {
+        let (closest_t, ray, closest_object) = 
+            self.closest_intersection(o, d, distance, viewrange);
         match closest_object {
             None => self.background_color,
             Some(object) => { 
