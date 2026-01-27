@@ -86,13 +86,17 @@ impl ApplicationHandler for App {
                         
                         let mut scene = Scene::new();
                         scene.add(Box::new(
-                                Sphere::new(Point3D::new(0.0, -1.0, 3.0), 1.0, 0xFF0000, 500)));
+                                Sphere::new(Point3D::new(0.0, -1.0, 3.0), 
+                                    1.0, 0xFF0000, 500, 0.2)));
                         scene.add(Box::new(
-                                Sphere::new(Point3D::new(2.0, 0.0, 4.0), 1.0, 0x0000FF, 500)));
+                                Sphere::new(Point3D::new(2.0, 0.0, 4.0), 
+                                    1.0, 0x0000FF, 500, 0.3)));
                         scene.add(Box::new(
-                                Sphere::new(Point3D::new(-2.0, 0.0, 4.0), 1.0, 0x00FF00, 10)));
+                                Sphere::new(Point3D::new(-2.0, 0.0, 4.0), 
+                                    1.0, 0x00FF00, 10, 0.4)));
                         scene.add(Box::new(
-                                Sphere::new(Point3D::new(0.0, -5001.0, 0.0), 5000.0, 0xFFFF00, 1000)));
+                                Sphere::new(Point3D::new(0.0, -5001.0, 0.0), 
+                                    5000.0, 0xFFFF00, 1000, 0.5)));
 
                         scene.add_light(Light::new_ambient(0.2));
                         scene.add_light(Light::new_point(0.6, Point3D::new(2.0, 1.0, 0.0)));
@@ -103,8 +107,9 @@ impl ApplicationHandler for App {
                         for x in -(canvas.width as i32/2)..(canvas.width as i32/2) {
                             for y in -(canvas.height as i32/2)..(canvas.height as i32/2) {
                                 let viewport_point = Point2D { x: x as f64, y: y as f64 };
-                                let d = viewport_point.project_viewport(&viewport, &canvas, distance);
-                                let color = scene.trace_ray(o, d, distance, viewrange);
+                                let canvas_point = viewport_point.project_viewport(&viewport, &canvas, distance);
+                                let d = canvas_point - o;
+                                let color = scene.trace_ray(o, d, distance, viewrange, 3);
                                 canvas.put_pixel(viewport_point, color);
                             }
                         }

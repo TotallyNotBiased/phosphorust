@@ -35,13 +35,13 @@ impl Light {
         }
     }
 
-    pub fn vector(&self, p: Point3D) -> Option<Vector3> {
+    pub fn vector(&self, p: Point3D) -> Option<(Vector3, u32)> {
         match self {
             Light::Point { position, .. } => {
-                Some(*position - p) 
+                Some((*position - p, 1)) 
             },
             Light::Directional { direction, .. } => {
-                Some(*direction)
+                Some((*direction, 100)) // "infinite" for now
             },
             Light::Ambient { .. } => {
                 None

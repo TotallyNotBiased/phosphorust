@@ -4,6 +4,7 @@ pub trait Primitive {
     fn intersect(&self, ray: &Ray) -> Option<f64>;
     fn color(&self) -> u32;
     fn specular(&self) -> u32;
+    fn reflective(&self) -> f64;
     fn get_origin(&self) -> Point3D;
 }
 
@@ -12,11 +13,12 @@ pub struct Sphere {
     radius: f64,
     color: u32,
     specular: u32,
+    reflective: f64,
 }
 
 impl Sphere {
-    pub fn new(origin: Point3D, radius: f64, color: u32, specular: u32) -> Self {
-        Self { origin, radius, color, specular }
+    pub fn new(origin: Point3D, radius: f64, color: u32, specular: u32, reflective: f64) -> Self {
+        Self { origin, radius, color, specular, reflective }
     }
 }
 
@@ -51,6 +53,10 @@ impl Primitive for Sphere {
 
     fn specular(&self) -> u32 {
         self.specular
+    }
+
+    fn reflective(&self) -> f64 {
+        self.reflective
     }
 
     fn get_origin(&self) -> Point3D {
