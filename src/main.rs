@@ -86,13 +86,13 @@ impl ApplicationHandler for App {
                         
                         let mut scene = Scene::new();
                         scene.add(Box::new(
-                                Sphere::new(Point3D::new(0.0, -1.0, 3.0), 1.0, 0xFF0000)));
+                                Sphere::new(Point3D::new(0.0, -1.0, 3.0), 1.0, 0xFF0000, 500)));
                         scene.add(Box::new(
-                                Sphere::new(Point3D::new(2.0, 0.0, 4.0), 1.0, 0x0000FF)));
+                                Sphere::new(Point3D::new(2.0, 0.0, 4.0), 1.0, 0x0000FF, 500)));
                         scene.add(Box::new(
-                                Sphere::new(Point3D::new(-2.0, 0.0, 4.0), 1.0, 0x00FF00)));
+                                Sphere::new(Point3D::new(-2.0, 0.0, 4.0), 1.0, 0x00FF00, 10)));
                         scene.add(Box::new(
-                                Sphere::new(Point3D::new(0.0, -5001.0, 0.0), 5000.0, 0xFFFF00)));
+                                Sphere::new(Point3D::new(0.0, -5001.0, 0.0), 5000.0, 0xFFFF00, 1000)));
 
                         scene.add_light(Light::new_ambient(0.2));
                         scene.add_light(Light::new_point(0.6, Point3D::new(2.0, 1.0, 0.0)));

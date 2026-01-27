@@ -27,7 +27,7 @@ impl Scene {
         self.lights.push(light);
     }
 
-    pub fn compute_lighting(&self, p: Point3D, n: Vector3) -> f64 {
+    pub fn compute_lighting(&self, p: Point3D, n: Vector3, vv: Vector3, s: u32) -> f64 {
         let mut i = 0.0;
         for light in &self.lights {
             if let Light::Ambient { intensity } = light {
@@ -39,6 +39,14 @@ impl Scene {
                 let m = n.dot(l);
                 if m > 0.0 {
                     i += light.intensity() * m/(n.len() * l.len());
+                }
+
+                if s != 0 {
+                    let r = n * 2.0 * n.dot(l) + -l;
+                    let t = r.dot(vv);
+                    if t > 0.0 {
+                        i += light.intensity() * (t/(r.len() * vv.len())).powi(s as i32);
+                    }
                 }
             }
         }
@@ -60,8 +68,7 @@ impl Scene {
                         closest_object = Some(object);
                     }
                 }
-                None => {
-                }
+                None => { /* don't do anything lol*/ }
             }
         }
 
@@ -71,7 +78,7 @@ impl Scene {
                 let p = o + (ray.direction * closest_t);
                 let mut n = p - object.get_origin();
                 n = n.normalize();
-                apply_intensity(object.color(), self.compute_lighting(p, n))
+                apply_intensity(object.color(), self.compute_lighting(p, n, -ray.direction, object.specular()))
             },
         }
     }
@@ -82,7 +89,9 @@ fn apply_intensity(color: u32, n: f64) -> u32 {
     let green = (((color >> 8) & 0xFF) as f64 * n) as u8;
     let blue = (((color) & 0xFF) as f64 * n) as u8;
 
-    (((red as u32) << 16) | ((green as u32) << 8) | (blue as u32)).into()
+    (((red.clamp(0, 255) as u32) << 16) | 
+    ((green.clamp(0, 255) as u32) << 8) | 
+    (blue.clamp(0, 255) as u32)).into()
 }
 
 pub struct Viewport {

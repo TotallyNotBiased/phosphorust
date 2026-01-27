@@ -114,6 +114,18 @@ impl std::ops::Add for Vector3 {
     }
 }
 
+impl std::ops::Neg for Vector3 {
+    type Output = Self;
+    fn neg(self) -> Self {
+        Self {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
+        }
+    }
+}
+
+
 #[derive(Debug, Clone, Copy)]
 pub struct Ray {
     pub origin: Point3D,
