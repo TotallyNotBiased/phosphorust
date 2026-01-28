@@ -1,4 +1,4 @@
-use crate::math::{Point3D, Vector3};
+use cg_math::{Point3D, Vector3};
 
 pub enum Light {
     Point { 

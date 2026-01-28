@@ -1,6 +1,3 @@
-use crate::scene::Viewport;
-use crate::canvas::Canvas;
-
 #[derive(Debug, Clone, Copy)]
 pub struct Point2D {
     pub x: f64,
@@ -8,9 +5,9 @@ pub struct Point2D {
 }
 
 impl Point2D {
-    pub fn project_viewport(&self, viewport: &Viewport, canvas: &Canvas, distance: f64) -> Point3D {
-        let vx = self.x * (viewport.width as f64 / canvas.width as f64);
-        let vy = self.y * (viewport.height as f64 / canvas.height as f64);
+    pub fn project_viewport(&self, viewport_w: f64, viewport_h: f64, canvas_w: u32, canvas_h: u32, distance: f64) -> Point3D {
+        let vx = self.x * (viewport_w / canvas_w as f64);
+        let vy = self.y * (viewport_h / canvas_h as f64);
 
         Point3D::new(vx, vy, distance)
     }
@@ -174,4 +171,10 @@ pub fn bad_quadratic(a: f64, b:f64, c: f64) -> Option<(f64, f64)> {
     } else {
         None
     }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
 }

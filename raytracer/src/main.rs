@@ -1,10 +1,9 @@
-pub mod math;
 pub mod primitive;
 pub mod canvas;
 pub mod scene;
 pub mod light;
 
-use math::{Point3D, Vector3, Point2D};
+use cg_math::{Point3D, Vector3, Point2D};
 use primitive::Sphere;
 use winit::dpi::LogicalSize;
 use canvas::Canvas;
@@ -107,7 +106,7 @@ impl ApplicationHandler for App {
                         for x in -(canvas.width as i32/2)..(canvas.width as i32/2) {
                             for y in -(canvas.height as i32/2)..(canvas.height as i32/2) {
                                 let viewport_point = Point2D { x: x as f64, y: y as f64 };
-                                let canvas_point = viewport_point.project_viewport(&viewport, &canvas, distance);
+                                let canvas_point = viewport_point.project_viewport(viewport.width,viewport.height,canvas.width, canvas.height, distance);
                                 let d = canvas_point - o;
                                 let color = scene.trace_ray(o, d, distance, viewrange, 3);
                                 canvas.put_pixel(viewport_point, color);
