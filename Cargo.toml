@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "cg_math",
+    "raytracer",
+    "rasterizer",
+]
