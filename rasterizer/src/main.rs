@@ -1,4 +1,5 @@
 use cg_common::math::{Point3D, Vector3, Point2D};
+use cg_common::canvas::Canvas;
 use winit::dpi::LogicalSize;
 
 use std::error::Error;
@@ -58,8 +59,13 @@ impl ApplicationHandler for App {
                     buffer.fill(0);
                     
                     { // lifetime bullshit 
-                        // let p2 = p3.project2d();
-                        // canvas.put_pixel(p2, 0x6495ED);
+                        let mut canvas = Canvas {
+                            width: buffer.width().get(),
+                            height: buffer.height().get(),
+                            buffer: &mut buffer,
+                        };
+                        let p2 = Point2D { x: 0.0, y: 0.0 };
+                        canvas.put_pixel(p2, 0x6495ED);
                     }
 
                     buffer.present().unwrap();
