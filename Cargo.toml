@@ -2,7 +2,7 @@
 resolver = "3"
 
 members = [
-    "cg_math",
+    "cg_common",
     "raytracer",
     "rasterizer",
 ]

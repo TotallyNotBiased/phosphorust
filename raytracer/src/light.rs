@@ -1,4 +1,4 @@
-use cg_math::{Point3D, Vector3};
+use cg_common::math::{Point3D, Vector3};
 
 pub enum Light {
     Point { 

@@ -1,14 +1,15 @@
 pub mod primitive;
-pub mod canvas;
 pub mod scene;
 pub mod light;
 
-use cg_math::{Point3D, Vector3, Point2D};
+
 use primitive::Sphere;
 use winit::dpi::LogicalSize;
-use canvas::Canvas;
 use scene::{Scene, Viewport};
 use light::*;
+
+use cg_common::math::{Point3D, Vector3, Point2D};
+use cg_common::canvas::Canvas;
 
 use std::error::Error;
 use std::num::NonZeroU32;
@@ -29,7 +30,7 @@ struct App {
 impl ApplicationHandler for App {
     fn resumed(&mut self, event_loop: &ActiveEventLoop) {
         let window_attributes = Window::default_attributes()
-            .with_title("phosphorust")
+            .with_title("phosphorust raytracer")
             .with_inner_size(LogicalSize::new(600.0, 600.0));
         let window = Rc::new(event_loop.create_window(window_attributes).unwrap());
         self.window = Some(window.clone());

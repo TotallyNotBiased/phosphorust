@@ -1,4 +1,4 @@
-use cg_math::{Point3D, Ray, bad_quadratic};
+use cg_common::math::{Point3D, Ray, bad_quadratic};
 
 pub trait Primitive {
     fn intersect(&self, ray: &Ray) -> Option<f64>;

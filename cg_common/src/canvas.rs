@@ -1,4 +1,4 @@
-use cg_math::Point2D;
+use crate::math::Point2D;
 
 pub struct Canvas<'a> {
     pub buffer: &'a mut [u32], 

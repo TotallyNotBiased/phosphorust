@@ -1,4 +1,4 @@
-use cg_math::{Point3D, Ray, Vector3};
+use cg_common::math::{Point3D, Ray, Vector3};
 use crate::primitive::Primitive;
 use crate::light::*;
 

@@ -251,7 +251,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "613afe47fcd5fac7ccf1db93babcb082c5994d996f20b8b159f2ad1658eb5724"
 
 [[package]]
-name = "cg_math"
+name = "cg_common"
 version = "0.1.0"
 
 [[package]]
@@ -1059,17 +1059,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220"
 
 [[package]]
-name = "phosphorust"
-version = "0.1.0"
-dependencies = [
- "cg_math",
- "env_logger",
- "log",
- "softbuffer",
- "winit",
-]
-
-[[package]]
 name = "pin-project"
 version = "1.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1181,12 +1170,30 @@ checksum = "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f"
 [[package]]
 name = "rasterizer"
 version = "0.1.0"
+dependencies = [
+ "cg_common",
+ "env_logger",
+ "log",
+ "softbuffer",
+ "winit",
+]
 
 [[package]]
 name = "raw-window-handle"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "20675572f6f24e9e76ef639bc5552774ed45f1c30e2951e1e99c59888861c539"
+
+[[package]]
+name = "raytracer"
+version = "0.1.0"
+dependencies = [
+ "cg_common",
+ "env_logger",
+ "log",
+ "softbuffer",
+ "winit",
+]
 
 [[package]]
 name = "redox_syscall"
