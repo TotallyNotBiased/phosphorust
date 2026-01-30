@@ -30,7 +30,7 @@ nix develop
 Then you can just run it:
 
 ```bash
-cargo run
+cargo run --bin raytracer
 ```
 
 ### Without Nix
