@@ -103,7 +103,7 @@ impl ApplicationHandler for App {
                         scene.add_light(Light::new_directional(0.2, Vector3 { x: 1.0, y: 4.0, z: 4.0 }));
 
                         let o = Point3D::new(0.0, 0.0, 0.0); // camera origin
-                        
+
                         for x in -(canvas.width as i32/2)..(canvas.width as i32/2) {
                             for y in -(canvas.height as i32/2)..(canvas.height as i32/2) {
                                 let viewport_point = Point2D { x: x as f64, y: y as f64 };
