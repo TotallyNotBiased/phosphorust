@@ -173,6 +173,19 @@ pub fn bad_quadratic(a: f64, b:f64, c: f64) -> Option<(f64, f64)> {
     }
 }
 
+pub fn lerp(i0: f64, d0: f64, i1: f64, d1: f64) -> Vec<i32> {
+    let mut values: Vec<i32> = Vec::new();
+
+    let a = (d1 - d0) / (i1 - i0);
+    let mut d = d0;
+    for _i in (i0 as i32)..(i1 as i32) {
+        values.push(d as i32);
+        d += a;
+    }
+    
+    values
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

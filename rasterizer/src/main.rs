@@ -72,8 +72,8 @@ impl ApplicationHandler for App {
                         let p0 = Point2D { x: 0.0, y: 0.0 };
                         canvas.put_pixel(p0, 0x6495ED);
 
-                        let p1 = Point2D {x: -3.0, y: -3.0};
-                        let p2 = Point2D {x: 2.0, y: 3.0};
+                        let p1 = Point2D {x: -200.0, y: -100.0};
+                        let p2 = Point2D {x: 240.0, y: 120.0};
 
                         draw_line(p1,p2, 0x6495ED, &mut canvas);
 
