@@ -1,6 +1,6 @@
 pub mod paint;
 
-use cg_common::math::{Point3D, Vector3, Point2D};
+use cg_common::math::Point2D;
 use cg_common::canvas::Canvas;
 use winit::dpi::LogicalSize;
 
@@ -16,7 +16,7 @@ use winit::window::{Window, WindowId};
 // comment out for wayland and change event_loop declaration in main()
 use winit::platform::x11::EventLoopBuilderExtX11;
 
-use crate::paint::draw_line;
+use crate::paint::{draw_filled_triangle, draw_wireframe_triangle};
 
 struct App {
     window: Option<Rc<Window>>,
@@ -69,13 +69,15 @@ impl ApplicationHandler for App {
                             height: buffer.height().get(),
                             buffer: &mut buffer,
                         };
-                        let p0 = Point2D { x: 0.0, y: 0.0 };
-                        canvas.put_pixel(p0, 0x6495ED);
+                        // let p0 = Point2D { x: 0.0, y: 0.0 };
+                        // canvas.put_pixel(p0, 0x6495ED);
 
-                        let p1 = Point2D {x: -200.0, y: -100.0};
-                        let p2 = Point2D {x: 240.0, y: 120.0};
+                        let p1 = Point2D {x: -200.0, y: -250.0};
+                        let p2 = Point2D {x: 200.0, y: 50.0};
+                        let p3 = Point2D {x: 20.0, y: 250.0};
 
-                        draw_line(p1,p2, 0x6495ED, &mut canvas);
+                        draw_wireframe_triangle(p1,p2,p3, 0x6495ED, &mut canvas);
+                        draw_filled_triangle(p1, p2, p3, 0x00FF00, &mut canvas);
 
                     }
 
