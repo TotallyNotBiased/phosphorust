@@ -1,6 +1,6 @@
 pub mod paint;
 
-use cg_common::math::Point2D;
+use cg_common::math::{Point2D, Vertex2};
 use cg_common::canvas::Canvas;
 use winit::dpi::LogicalSize;
 
@@ -16,7 +16,7 @@ use winit::window::{Window, WindowId};
 // comment out for wayland and change event_loop declaration in main()
 use winit::platform::x11::EventLoopBuilderExtX11;
 
-use crate::paint::{draw_filled_triangle, draw_wireframe_triangle};
+use crate::paint::{draw_filled_triangle, draw_wireframe_triangle, draw_shaded_triangle};
 
 struct App {
     window: Option<Rc<Window>>,
@@ -76,8 +76,15 @@ impl ApplicationHandler for App {
                         let p2 = Point2D {x: 200.0, y: 50.0};
                         let p3 = Point2D {x: 20.0, y: 250.0};
 
+                        let v0 = Vertex2 {x: -200.0, y: -200.0, h: 0.5};
+                        let v1 = Vertex2 {x: -200.0, y: -275.0, h: 1.0};
+                        let v2 = Vertex2 {x: 50.0, y: -275.0, h: 0.75};
+                        
+
+                        draw_filled_triangle(p1, p2, p3, 0x123524, &mut canvas);
                         draw_wireframe_triangle(p1,p2,p3, 0x6495ED, &mut canvas);
-                        draw_filled_triangle(p1, p2, p3, 0x00FF00, &mut canvas);
+                        draw_shaded_triangle(v0,v1,v2, 0x6495ED, &mut canvas);
+                        
 
                     }
 
