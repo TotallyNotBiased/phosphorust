@@ -1,4 +1,4 @@
-use cg_common::math::{Point3D, Ray, Vector3};
+use cg_common::math::{Point3D, Ray, Vector3, apply_intensity};
 use crate::primitive::Primitive;
 use crate::light::*;
 
@@ -117,16 +117,6 @@ impl Scene {
 
         
     }
-}
-
-fn apply_intensity(color: u32, n: f64) -> u32 {
-    let red = (((color >> 16) & 0xFF) as f64 * n) as u8;
-    let green = (((color >> 8) & 0xFF) as f64 * n) as u8;
-    let blue = (((color) & 0xFF) as f64 * n) as u8;
-
-    (((red.clamp(0, 255) as u32) << 16) | 
-    ((green.clamp(0, 255) as u32) << 8) | 
-    (blue.clamp(0, 255) as u32)).into()
 }
 
 fn add_colors(color_a: u32, color_b: u32) -> u32 {
