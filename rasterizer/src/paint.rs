@@ -1,4 +1,4 @@
-use cg_common::math::{Point2D, Vertex2, lerp, apply_intensity};
+use cg_common::math::{Point2D, Vertex2, lerp, lerp_f64, apply_intensity};
 use cg_common::canvas::Canvas;
 
 pub fn draw_line(point_a: Point2D, point_b: Point2D, color: u32, canvas: &mut Canvas) {
@@ -100,13 +100,13 @@ pub fn draw_shaded_triangle(point_a: Vertex2, point_b: Vertex2, point_c: Vertex2
     let y2 = p2.y as i32;
 
     let mut xs0_1 = lerp(y0.into(), p0.x, y1.into(), p1.x);
-    let mut hs0_1 = lerp(y0.into(), p0.h,y1.into(), p1.h);
+    let mut hs0_1 = lerp_f64(y0.into(), p0.h,y1.into(), p1.h);
     
     let xs1_2 = lerp(y1.into(), p1.x, y2.into(), p2.x);
-    let hs1_2 = lerp(y1.into(), p1.h, y2.into(), p2.h);
+    let hs1_2 = lerp_f64(y1.into(), p1.h, y2.into(), p2.h);
 
     let xs0_2 = lerp(y0.into(), p0.x, y2.into(), p2.x);
-    let hs0_2 = lerp(y0.into(), p0.h, y2.into(), p2.h);
+    let hs0_2 = lerp_f64(y0.into(), p0.h, y2.into(), p2.h);
 
     if let Some(_) = xs0_1.pop() { }
     let xs0_1_2 = [xs0_1.as_slice(), xs1_2.as_slice()].concat();
@@ -119,8 +119,8 @@ pub fn draw_shaded_triangle(point_a: Vertex2, point_b: Vertex2, point_c: Vertex2
     let mut x_left: Vec<i32> = Vec::new();
     let mut x_right: Vec<i32> = Vec::new();
 
-    let mut h_left: Vec<i32> = Vec::new();
-    let mut h_right: Vec<i32> = Vec::new();
+    let mut h_left: Vec<f64> = Vec::new();
+    let mut h_right: Vec<f64> = Vec::new();
 
     if m < xs0_2.len() && xs0_2[m] < xs0_1_2[m] {
         x_left.extend_from_slice(&xs0_2);
@@ -146,7 +146,7 @@ pub fn draw_shaded_triangle(point_a: Vertex2, point_b: Vertex2, point_c: Vertex2
         let xl = x_left[idx];
         let xr = x_right[idx];
 
-        let h_segment = lerp(xl.into(), h_left[idx].into(), xr.into(), h_right[idx].into());
+        let h_segment = lerp_f64(xl.into(), h_left[idx].into(), xr.into(), h_right[idx].into());
 
         for x in xl..=xr {
             let shaded_color = apply_intensity(color, h_segment[(x - xl) as usize].into());

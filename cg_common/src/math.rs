@@ -199,6 +199,25 @@ pub fn lerp(i0: f64, d0: f64, i1: f64, d1: f64) -> Vec<i32> {
     values
 }
 
+pub fn lerp_f64(i0: f64, d0: f64, i1: f64, d1: f64) -> Vec<f64> {
+    let mut values: Vec<f64> = Vec::new();
+
+    if i0 == i1 {
+        values.push(d0);
+        return values;
+    }
+
+    let a = (d1 - d0) / (i1 - i0);
+    let mut d = d0;
+    
+    for _i in (i0 as i32)..=(i1 as i32) {
+        values.push(d); 
+        d += a;
+    }
+    
+    values
+}
+
 pub fn apply_intensity(color: u32, n: f64) -> u32 {
     let red = (((color >> 16) & 0xFF) as f64 * n) as u8;
     let green = (((color >> 8) & 0xFF) as f64 * n) as u8;

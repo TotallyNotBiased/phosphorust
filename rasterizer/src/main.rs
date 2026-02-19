@@ -76,14 +76,14 @@ impl ApplicationHandler for App {
                         let p2 = Point2D {x: 200.0, y: 50.0};
                         let p3 = Point2D {x: 20.0, y: 250.0};
 
-                        let v0 = Vertex2 {x: -200.0, y: -200.0, h: 0.5};
-                        let v1 = Vertex2 {x: -200.0, y: -275.0, h: 1.0};
-                        let v2 = Vertex2 {x: 50.0, y: -275.0, h: 0.75};
+                        let v0 = Vertex2 {x: -200.0, y: -200.0, h: 0.2};
+                        let v1 = Vertex2 {x: -200.0, y: 250.0, h: 1.0};
+                        let v2 = Vertex2 {x: 0.0, y: 250.0, h: 0.5};
                         
 
                         draw_filled_triangle(p1, p2, p3, 0x123524, &mut canvas);
                         draw_wireframe_triangle(p1,p2,p3, 0x6495ED, &mut canvas);
-                        draw_shaded_triangle(v0,v1,v2, 0x6495ED, &mut canvas);
+                        draw_shaded_triangle(v0,v1,v2, 0x9b111e, &mut canvas);
                         
 
                     }
