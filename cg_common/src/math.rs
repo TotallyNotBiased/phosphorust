@@ -13,10 +13,16 @@ impl Point2D {
     }
 }
 
-pub struct Vertex2 {
+pub struct ShadedVertex2 {
     pub x: f64,
     pub y: f64,
     pub h: f64,
+}
+
+pub struct Vertex3 {
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
 }
 
 #[derive(Debug, Clone, Copy)]

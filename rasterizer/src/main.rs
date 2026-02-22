@@ -1,6 +1,6 @@
 pub mod paint;
 
-use cg_common::math::{Point2D, Vertex2};
+use cg_common::math::{Point2D, ShadedVertex2};
 use cg_common::canvas::Canvas;
 use winit::dpi::LogicalSize;
 
@@ -76,9 +76,9 @@ impl ApplicationHandler for App {
                         let p2 = Point2D {x: 200.0, y: 50.0};
                         let p3 = Point2D {x: 20.0, y: 250.0};
 
-                        let v0 = Vertex2 {x: -200.0, y: -200.0, h: 0.2};
-                        let v1 = Vertex2 {x: -200.0, y: 250.0, h: 1.0};
-                        let v2 = Vertex2 {x: 0.0, y: 250.0, h: 0.5};
+                        let v0 = ShadedVertex2 {x: -200.0, y: -200.0, h: 0.2};
+                        let v1 = ShadedVertex2 {x: -200.0, y: 250.0, h: 1.0};
+                        let v2 = ShadedVertex2 {x: 0.0, y: 250.0, h: 0.5};
                         
 
                         draw_filled_triangle(p1, p2, p3, 0x123524, &mut canvas);

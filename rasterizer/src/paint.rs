@@ -1,4 +1,4 @@
-use cg_common::math::{Point2D, Vertex2, lerp, lerp_f64, apply_intensity};
+use cg_common::math::{Point2D, ShadedVertex2, lerp, lerp_f64, apply_intensity};
 use cg_common::canvas::Canvas;
 
 pub fn draw_line(point_a: Point2D, point_b: Point2D, color: u32, canvas: &mut Canvas) {
@@ -82,15 +82,11 @@ pub fn draw_filled_triangle(point_a: Point2D, point_b: Point2D, point_c: Point2D
     }
 }
 
-
-
-pub fn draw_shaded_triangle(point_a: Vertex2, point_b: Vertex2, point_c: Vertex2, color: u32, canvas: &mut Canvas) {
-    // create locally mutable variables since we are not passing &muts in
+pub fn draw_shaded_triangle(point_a: ShadedVertex2, point_b: ShadedVertex2, point_c: ShadedVertex2, color: u32, canvas: &mut Canvas) {
     let mut p0 = point_a;
     let mut p1 = point_b;
     let mut p2 = point_c;
 
-    // sort the points
     if p1.y < p0.y { std::mem::swap(&mut p1, &mut p0); }
     if p2.y < p0.y { std::mem::swap(&mut p2, &mut p0); }
     if p2.y < p1.y { std::mem::swap(&mut p2, &mut p1); }
