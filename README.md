@@ -12,6 +12,8 @@ Right now we're just a software raytracer with one kind of primitive (spheres), 
 
 ## Following Along
 
+We use X11/Wayland to draw windows. MacOS compatibility coming soon.
+
 ### Using Nix 
 
 To run it yourself, I recommend Nix, because that's what I use. Simply clone the repository:
